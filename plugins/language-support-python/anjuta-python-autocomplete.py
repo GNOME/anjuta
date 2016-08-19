@@ -1,9 +1,10 @@
+# from __future__ import print_function
 import getopt
 import sys
 from collections import namedtuple
 from rope.base.project import Project
 from rope.contrib import codeassist
-from rope.contrib import autoimport
+# from rope.contrib import autoimport
 import os
 import re
 import pkg_resources
@@ -158,9 +159,12 @@ def parse_arguments(args):
 if __name__ == '__main__':
     try:
         ROPE_VERSION = pkg_resources.get_distribution('rope').version
-    except:
-        print '|Missing python-rope module!|.|.|.|.|'
-        sys.exit(1)
+    except pkg_resources.DistributionNotFound:
+        try:
+            ROPE_VERSION = pkg_resources.get_distribution('rope-py3k').version
+        except pkg_resources.DistributionNotFound:
+                print('|Missing python-rope module!|.|.|.|.|')
+                sys.exit(1)
     try:
         args = parse_arguments(sys.argv[1:])
 
@@ -188,9 +192,9 @@ if __name__ == '__main__':
             calltip = calltip_obj.get_calltip()
 
         for s in suggestions:
-            print "|{0}|{1}|{2}|{3}|{4}|".format(
+            print("|{0}|{1}|{2}|{3}|{4}|".format(
                 s.name, s.scope, s.type, s.location, s.info
-            )
-        print calltip
+            ))
+        print(calltip)
     except:
         pass
