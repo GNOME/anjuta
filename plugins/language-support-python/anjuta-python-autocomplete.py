@@ -1,10 +1,8 @@
-# from __future__ import print_function
 import getopt
 import sys
 from collections import namedtuple
 from rope.base.project import Project
 from rope.contrib import codeassist
-# from rope.contrib import autoimport
 import os
 import re
 import pkg_resources
@@ -157,14 +155,20 @@ def parse_arguments(args):
     return ret
 
 if __name__ == '__main__':
-    try:
-        ROPE_VERSION = pkg_resources.get_distribution('rope').version
-    except pkg_resources.DistributionNotFound:
+    if sys.version[0] == '2':
+        try:
+            ROPE_VERSION = pkg_resources.get_distribution('rope').version
+        except pkg_resources.DistributionNotFound:
+            print('|Missing python-rope module!|.|.|.|.|')
+            sys.exit(1)
+    elif sys.version[0] == '3':
         try:
             ROPE_VERSION = pkg_resources.get_distribution('rope-py3k').version
         except pkg_resources.DistributionNotFound:
-                print('|Missing python-rope module!|.|.|.|.|')
-                sys.exit(1)
+            print('|Missing python-rope module!|.|.|.|.|')
+            sys.exit(1)
+    else:
+        sys.exit(1)
     try:
         args = parse_arguments(sys.argv[1:])
 
