@@ -39,7 +39,7 @@ static void make_ctags_entry (CTagsEntry* entry) {
 	tag.lineNumber = entry->line_number;
 	tag.kindName = entry->kind_name;
 	tag.kind = entry->kind;
-	/* FIXME: add filePosition */
+	tag.filePosition = entry->filePosition;
 	tag.extensionFields.access = entry->access;
 	tag.extensionFields.implementation = entry->implementation;
 	tag.extensionFields.inheritance = entry->inheritance;

@@ -26,6 +26,7 @@ public struct CTagsEntry {
 	public string name;
 	public string kind_name;
 	public char kind;
+	public size_t filePosition;
 	public string access;
 	public string implementation;
 	public string inheritance;
@@ -163,6 +164,8 @@ public class CTagsVisitor : CodeVisitor {
 		entry.name = cl.name;
 		entry.kind_name = "class";
 		entry.kind = 'c';
+		entry.filePosition = cl.source_reference.begin.pos
+				   - cl.source_reference.file.get_mapped_contents();
 		entry.access = get_access (cl);
 		entry.implementation = implementation(cl);
 		entry.inheritance = to_string(cl.get_base_types(), ",");
@@ -178,6 +181,8 @@ public class CTagsVisitor : CodeVisitor {
 		entry.name = st.name;
 		entry.kind_name = "struct";
 		entry.kind = 's';
+		entry.filePosition = st.source_reference.begin.pos
+				   - st.source_reference.file.get_mapped_contents();
 		entry.access = get_access (st);
 		entry.scope = scope (st);
 
@@ -192,6 +197,8 @@ public class CTagsVisitor : CodeVisitor {
 		entry.name = iface.name;
 		entry.kind_name = "interface";
 		entry.kind = 'i';
+		entry.filePosition = iface.source_reference.begin.pos
+				   - iface.source_reference.file.get_mapped_contents();
 		entry.access = get_access (iface);
 		entry.inheritance = to_string(iface.get_prerequisites());
 		entry.scope = scope (iface);
@@ -208,6 +215,8 @@ public class CTagsVisitor : CodeVisitor {
 		entry.name = en.name;
 		entry.kind_name = "enum";
 		entry.kind = 'e';
+		entry.filePosition = en.source_reference.begin.pos
+				   - en.source_reference.file.get_mapped_contents();
 		entry.access = get_access (en);
 		entry.scope = scope (en);
 
@@ -222,6 +231,8 @@ public class CTagsVisitor : CodeVisitor {
 		entry.name = edomain.name;
 		entry.kind_name = "errordomain";
 		entry.kind = 'E';
+		entry.filePosition = edomain.source_reference.begin.pos
+				   - edomain.source_reference.file.get_mapped_contents();
 		entry.access = get_access (edomain);
 		entry.scope = scope (edomain);
 
@@ -237,6 +248,8 @@ public class CTagsVisitor : CodeVisitor {
 		entry.name = ev.name;
 		entry.kind_name = "enumvalue";
 		entry.kind = 'v';
+		entry.filePosition = ev.source_reference.begin.pos
+				   - ev.source_reference.file.get_mapped_contents();
 		entry.access = get_access (ev);
 		entry.scope = scope (ev);
 
@@ -250,6 +263,8 @@ public class CTagsVisitor : CodeVisitor {
 		entry.name = ecode.name;
 		entry.kind_name = "errorcode";
 		entry.kind = 'r';
+		entry.filePosition = ecode.source_reference.begin.pos
+				   - ecode.source_reference.file.get_mapped_contents();
 		entry.access = get_access (ecode);
 		entry.scope = scope (ecode);
 
@@ -264,6 +279,8 @@ public class CTagsVisitor : CodeVisitor {
 		entry.name = d.name;
 		entry.kind_name = "delegate";
 		entry.kind = 'd';
+		entry.filePosition = d.source_reference.begin.pos
+				   - d.source_reference.file.get_mapped_contents();
 		entry.access = get_access (d);
 		entry.scope = scope (d);
 		entry.returntype = d.return_type.to_qualified_string();
@@ -279,6 +296,8 @@ public class CTagsVisitor : CodeVisitor {
 		entry.name = sig.name;
 		entry.kind_name = "signal";
 		entry.kind = 'S';
+		entry.filePosition = sig.source_reference.begin.pos
+				   - sig.source_reference.file.get_mapped_contents();
 		entry.access = get_access (sig);
 		entry.implementation = implementation(sig);
 		entry.scope = scope (sig);
@@ -295,6 +314,8 @@ public class CTagsVisitor : CodeVisitor {
 		entry.name = f.name;
 		entry.kind_name = "field";
 		entry.kind = 'f';
+		entry.filePosition = f.source_reference.begin.pos
+				   - f.source_reference.file.get_mapped_contents();
 		entry.access = get_access (f);
 		entry.scope = scope (f);
 		entry.typeref = f.variable_type.to_qualified_string();
@@ -309,6 +330,8 @@ public class CTagsVisitor : CodeVisitor {
 		entry.name = c.name;
 		entry.kind_name = "field";
 		entry.kind = 'f';
+		entry.filePosition = c.source_reference.begin.pos
+				   - c.source_reference.file.get_mapped_contents();
 		entry.access = get_access (c);
 		entry.scope = scope (c);
 		entry.typeref = c.type_reference.to_qualified_string();
@@ -323,6 +346,8 @@ public class CTagsVisitor : CodeVisitor {
 		entry.name = prop.name;
 		entry.kind_name = "property";
 		entry.kind = 'p';
+		entry.filePosition = prop.source_reference.begin.pos
+				   - prop.source_reference.file.get_mapped_contents();
 		entry.access = get_access (prop);
 		entry.implementation = implementation(prop);
 		entry.scope = scope (prop);
@@ -339,6 +364,8 @@ public class CTagsVisitor : CodeVisitor {
 		entry.name = m.name;
 		entry.kind_name = "method";
 		entry.kind = 'm';
+		entry.filePosition = m.source_reference.begin.pos
+				   - m.source_reference.file.get_mapped_contents();
 		entry.access = get_access (m);
 		entry.implementation = implementation(m);
 		entry.scope = scope (m);
@@ -356,6 +383,8 @@ public class CTagsVisitor : CodeVisitor {
 		entry.name = local.name;
 		entry.kind_name = "local";
 		entry.kind = 'l';
+		entry.filePosition = local.source_reference.begin.pos
+				   - local.source_reference.file.get_mapped_contents();
 		entry.access = get_access (local);
 
 		taglist.append(entry);
