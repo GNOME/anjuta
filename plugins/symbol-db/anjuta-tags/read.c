@@ -30,7 +30,7 @@
 *   DATA DEFINITIONS
 */
 inputFile File;  /* globally read through macros */
-static fpos_t StartOfLine;  /* holds deferred position of start of line */
+static long StartOfLine;  /* holds deferred position of start of line */
 
 /*
 *   FUNCTION DEFINITIONS
@@ -268,8 +268,7 @@ extern boolean fileOpen (const char *const fileName, const langType language)
 		opened = TRUE;
 
 		setInputFileName (fileName);
-		fgetpos (File.fp, &StartOfLine);
-		fgetpos (File.fp, &File.filePosition);
+		File.filePosition = StartOfLine = ftell (File.fp);
 		File.currentLine  = NULL;
 		File.language     = language;
 		File.lineNumber   = 0L;
@@ -343,7 +342,7 @@ readnext:
 				goto readnext;
 			else
 			{
-				fsetpos (File.fp, &StartOfLine);
+				fseek (File.fp, StartOfLine, SEEK_SET);
 				c = getc (File.fp);
 			}
 		}
@@ -354,7 +353,7 @@ readnext:
 	else if (c == NEWLINE)
 	{
 		File.newLine = TRUE;
-		fgetpos (File.fp, &StartOfLine);
+		StartOfLine = ftell (File.fp);
 	}
 	else if (c == CRETURN)
 	{
@@ -371,7 +370,7 @@ readnext:
 		{
 			c = NEWLINE;  /* convert CR into newline */
 			File.newLine = TRUE;
-			fgetpos (File.fp, &StartOfLine);
+			StartOfLine  = ftell (File.fp);
 		}
 	}
 	DebugStatement ( debugPutc (DEBUG_RAW, c); )
@@ -538,16 +537,6 @@ extern char *readLine (vString *const vLine, FILE *const fp)
 		} while (reReadLine);
 	}
 	return result;
-}
-
-long getInputFilePosition() {
-    fpos_t originalPosition;
-    long ret;
-    fgetpos (File.fp, &originalPosition);
-    fsetpos (File.fp, &File.filePosition);
-    ret = ftell(File.fp);
-	fsetpos (File.fp, &originalPosition);
-    return ret;
 }
 
 /*  Places into the line buffer the contents of the line referenced by
