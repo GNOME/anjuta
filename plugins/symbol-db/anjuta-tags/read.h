@@ -38,6 +38,7 @@
 #define getSourceLanguage()      File.source.language
 #define getSourceLanguageName()  getLanguageName (File.source.language)
 #define getSourceLineNumber()    File.source.lineNumber
+#define getInputFilePosition()   File.filePosition;
 #define isLanguage(lang)         (boolean)((lang) == File.source.language)
 #define isHeaderFile()           File.source.isHeader
 
@@ -72,7 +73,7 @@ typedef struct sInputFile {
 	const unsigned char* currentLine;  /* current line being worked on */
 	FILE       *fp;            /* stream used for reading the file */
 	unsigned long lineNumber;  /* line number in the input file */
-	fpos_t      filePosition;  /* file position of current line */
+	long        filePosition;  /* file position of current line */
 	int         ungetch;       /* a single character that was ungotten */
 	boolean     eof;           /* have we reached the end of file? */
 	boolean     newLine;       /* will the next character begin a new line? */
@@ -109,7 +110,6 @@ extern void fileUngetc (int c);
 extern const unsigned char *fileReadLine (void);
 extern char *readLine (vString *const vLine, FILE *const fp);
 extern char *readSourceLine (vString *const vLine, long location);
-extern long getInputFilePosition(void);
 
 #endif  /* _READ_H */
 
