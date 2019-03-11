@@ -420,7 +420,7 @@ static tokenInfo *newToken (void)
 	token->string       = vStringNew ();
 	token->secondary    = NULL;
 	token->lineNumber   = getSourceLineNumber ();
-	token->filePosition = getInputFilePosition ();
+	token->filePosition = File.filePosition;
 
 	return token;
 }
@@ -933,7 +933,7 @@ getNextChar:
 	c = getChar ();
 
 	token->lineNumber	= getSourceLineNumber ();
-	token->filePosition	= getInputFilePosition ();
+	token->filePosition	= File.filePosition;
 
 	switch (c)
 	{

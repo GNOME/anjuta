@@ -427,7 +427,7 @@ static tokenInfo *newToken (void)
 	token->scope              = vStringNew ();
 	token->begin_end_nest_lvl = 0;
 	token->lineNumber         = getSourceLineNumber ();
-	token->filePosition       = getInputFilePosition ();
+	token->filePosition       = File.filePosition;
 
 	return token;
 }
@@ -540,7 +540,7 @@ getNextChar:
 	{
 		c = fileGetc ();
 		token->lineNumber   = getSourceLineNumber ();
-		token->filePosition = getInputFilePosition ();
+		token->filePosition = File.filePosition;
 		/* 
 		 * Added " to the list of ignores, not sure what this 
 		 * might break but it gets by this issue:
@@ -574,7 +574,7 @@ getNextChar:
 				  token->type = TOKEN_STRING;
 				  parseString (token->string, c);
 				  token->lineNumber = getSourceLineNumber ();
-				  token->filePosition = getInputFilePosition ();
+				  token->filePosition = File.filePosition;
 				  break;
 
 		case '-':
@@ -618,7 +618,7 @@ getNextChar:
 					  fileUngetc (c);
 				  token->type = TOKEN_CHARACTER;
 				  token->lineNumber = getSourceLineNumber ();
-				  token->filePosition = getInputFilePosition ();
+				  token->filePosition = File.filePosition;
 				  break;
 
 		case '/':
@@ -661,7 +661,7 @@ getNextChar:
 				  {
 					  parseIdentifier (token->string, c);
 					  token->lineNumber = getSourceLineNumber ();
-					  token->filePosition = getInputFilePosition ();
+					  token->filePosition = File.filePosition;
 					  token->keyword = analyzeToken (token->string, Lang_sql);
 					  if (isKeyword (token, KEYWORD_rem))
 					  {

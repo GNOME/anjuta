@@ -230,7 +230,7 @@ static tokenInfo *newToken (void)
 	token->isClass		= FALSE;
 	token->ignoreTag	= FALSE;
 	token->lineNumber   = getSourceLineNumber ();
-	token->filePosition = getInputFilePosition ();
+	token->filePosition = File.filePosition;
 
 	return token;
 }
@@ -431,7 +431,7 @@ getNextChar:
 	{
 		c = fileGetc ();
 		token->lineNumber   = getSourceLineNumber ();
-		token->filePosition = getInputFilePosition ();
+		token->filePosition = File.filePosition;
 	}
 	while (c == '\t'  ||  c == ' ' ||  c == '\n');
 
@@ -456,7 +456,7 @@ getNextChar:
 				  token->type = TOKEN_STRING;
 				  parseString (token->string, c);
 				  token->lineNumber = getSourceLineNumber ();
-				  token->filePosition = getInputFilePosition ();
+				  token->filePosition = File.filePosition;
 				  break;
 
 		case '\\':
@@ -465,7 +465,7 @@ getNextChar:
 					  fileUngetc (c);
 				  token->type = TOKEN_CHARACTER;
 				  token->lineNumber = getSourceLineNumber ();
-				  token->filePosition = getInputFilePosition ();
+				  token->filePosition = File.filePosition;
 				  break;
 
 		case '/':
@@ -478,7 +478,7 @@ getNextChar:
 						  fileUngetc (d);
 						  token->type = TOKEN_FORWARD_SLASH;
 						  token->lineNumber = getSourceLineNumber ();
-						  token->filePosition = getInputFilePosition ();
+						  token->filePosition = File.filePosition;
 					  }
 					  else
 					  {
@@ -504,7 +504,7 @@ getNextChar:
 						  {
 							  token->type = TOKEN_CLOSE_SGML;
 							  token->lineNumber = getSourceLineNumber ();
-							  token->filePosition = getInputFilePosition ();
+							  token->filePosition = File.filePosition;
 						  }
 					  }
 					  break;
@@ -525,7 +525,7 @@ getNextChar:
 						  fileUngetc (d);
 						  token->type = TOKEN_LESS_THAN;
 						  token->lineNumber = getSourceLineNumber ();
-						  token->filePosition = getInputFilePosition ();
+						  token->filePosition = File.filePosition;
 
 					  }
 					  else
@@ -539,7 +539,7 @@ getNextChar:
 								  fileUngetc (d);
 								  token->type = TOKEN_LESS_THAN;
 								  token->lineNumber = getSourceLineNumber ();
-								  token->filePosition = getInputFilePosition ();
+								  token->filePosition = File.filePosition;
 							  }
 							  else
 							  {
@@ -553,7 +553,7 @@ getNextChar:
 										  fileUngetc (d);
 										  token->type = TOKEN_LESS_THAN;
 										  token->lineNumber = getSourceLineNumber ();
-										  token->filePosition = getInputFilePosition ();
+										  token->filePosition = File.filePosition;
 									  }
 									  else
 									  {
@@ -593,7 +593,7 @@ getNextChar:
 								  fileUngetc (d);
 								  token->type = TOKEN_LESS_THAN;
 								  token->lineNumber = getSourceLineNumber ();
-								  token->filePosition = getInputFilePosition ();
+								  token->filePosition = File.filePosition;
 							  }
 							  else
 							  {
@@ -607,7 +607,7 @@ getNextChar:
 										  fileUngetc (d);
 										  token->type = TOKEN_LESS_THAN;
 										  token->lineNumber = getSourceLineNumber ();
-										  token->filePosition = getInputFilePosition ();
+										  token->filePosition = File.filePosition;
 									  }
 									  else
 									  {
@@ -615,7 +615,7 @@ getNextChar:
 										  {
 											  token->type = TOKEN_OPEN_MXML;
 											  token->lineNumber = getSourceLineNumber ();
-											  token->filePosition = getInputFilePosition ();
+											  token->filePosition = File.filePosition;
 										  }
 									  }
 								  }
@@ -630,7 +630,7 @@ getNextChar:
 								  fileUngetc (d);
 								  token->type = TOKEN_LESS_THAN;
 								  token->lineNumber = getSourceLineNumber ();
-								  token->filePosition = getInputFilePosition ();
+								  token->filePosition = File.filePosition;
 							  }
 							  else
 							  {
@@ -641,7 +641,7 @@ getNextChar:
 									  fileUngetc (e);
 									  token->type = TOKEN_LESS_THAN;
 									  token->lineNumber = getSourceLineNumber ();
-									  token->filePosition = getInputFilePosition ();
+									  token->filePosition = File.filePosition;
 								  }
 								  else
 								  {
@@ -655,7 +655,7 @@ getNextChar:
 											  fileUngetc (e);
 											  token->type = TOKEN_LESS_THAN;
 											  token->lineNumber = getSourceLineNumber ();
-											  token->filePosition = getInputFilePosition ();
+											  token->filePosition = File.filePosition;
 										  }
 										  else
 										  {
@@ -663,7 +663,7 @@ getNextChar:
 											  {
 												  token->type = TOKEN_CLOSE_MXML;
 												  token->lineNumber = getSourceLineNumber ();
-												  token->filePosition = getInputFilePosition ();
+												  token->filePosition = File.filePosition;
 											  }
 										  }
 									  }
@@ -677,13 +677,13 @@ getNextChar:
 		case '>':
 				  token->type = TOKEN_GREATER_THAN;
 				  token->lineNumber = getSourceLineNumber ();
-				  token->filePosition = getInputFilePosition ();
+				  token->filePosition = File.filePosition;
 				  break;
 
 		case '!': 
 				  token->type = TOKEN_EXCLAMATION;			
 				  /*token->lineNumber = getSourceLineNumber ();
-				  token->filePosition = getInputFilePosition ();*/
+				  token->filePosition = File.filePosition;*/
 				  break;
 
 		default:
@@ -693,7 +693,7 @@ getNextChar:
 				  {
 					  parseIdentifier (token->string, c);
 					  token->lineNumber = getSourceLineNumber ();
-					  token->filePosition = getInputFilePosition ();
+					  token->filePosition = File.filePosition;
 					  token->keyword = analyzeToken (token->string, Lang_js);
 					  if (isKeyword (token, KEYWORD_NONE))
 						  token->type = TOKEN_IDENTIFIER;

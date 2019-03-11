@@ -488,7 +488,7 @@ static void initToken (tokenInfo* const token)
 	token->type			= TOKEN_NONE;
 	token->keyword		= KEYWORD_NONE;
 	token->lineNumber	= getSourceLineNumber ();
-	token->filePosition	= getInputFilePosition ();
+	token->filePosition	= File.filePosition;
 	vStringClear (token->name);
 }
 

@@ -844,7 +844,7 @@ extern void initTagEntry (tagEntryInfo *const e, const char *const name)
 	e->lineNumberEntry = (boolean) (Option.locate == EX_LINENUM);
 	e->lineNumber      = getSourceLineNumber ();
 	e->language        = getSourceLanguageName ();
-	e->filePosition    = getInputFilePosition ();
+	e->filePosition    = File.filePosition;
 	e->sourceFileName  = getSourceFileTagPath ();
 	e->name            = name;
 }
