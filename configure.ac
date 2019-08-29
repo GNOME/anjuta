@@ -78,9 +78,13 @@ if test "$LEX" != "flex"; then
 	AC_MSG_ERROR(flex is required)
 fi
 AC_PROG_YACC
-if test "$YACC" != "bison -y"; then
-	AC_MSG_ERROR(bison is required)
-fi
+case "$YACC" in
+  'bison '*)
+    ;;
+  *)
+    AC_MSG_ERROR(bison is required)
+    ;;
+esac
 AC_LANG([C])
 AC_LANG([C++])
 AC_PROG_CXX
