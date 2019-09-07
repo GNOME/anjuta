@@ -8,6 +8,8 @@ SUBDIRS = \
 	pixmaps scripts data \
 	doc libanjuta plugins src manuals mime launcher po
 
+README: README.md
+
 dist_doc_DATA = \
 	MAINTAINERS\
 	README\
