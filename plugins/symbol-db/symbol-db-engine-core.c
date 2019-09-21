@@ -5443,7 +5443,11 @@ symbol_db_engine_update_project_symbols (SymbolDBEngine *dbe,
 								G_TYPE_STRING, 
 								G_TYPE_INT, 
 								G_TYPE_INT, 
+#ifdef HAVE_GDA6
+								G_TYPE_DATE_TIME,
+#else
 								GDA_TYPE_TIMESTAMP, 
+#endif
 								G_TYPE_NONE
 							};
 	data_model = gda_connection_statement_execute_select_full (priv->db_connection, 
@@ -5473,7 +5477,11 @@ symbol_db_engine_update_project_symbols (SymbolDBEngine *dbe,
 	for (i = 0; i < num_rows; i++)
 	{	
 		const GValue *value, *value1;
+#ifdef HAVE_GDA6
+		GDateTime *timestamp;
+#else
 		const GdaTimestamp *timestamp;
+#endif
 		const gchar *file_name;
 		gchar *file_abs_path = NULL;
 		struct tm filetm;
@@ -5530,17 +5538,30 @@ symbol_db_engine_update_project_symbols (SymbolDBEngine *dbe,
 		}
 
 
+#ifdef HAVE_GDA6
+		timestamp = g_value_get_boxed (value1);
+#else
 		timestamp = gda_value_get_timestamp (value1);
+#endif
 
 		/* fill a struct tm with the date retrieved by the string. */
 		/* string is something like '2007-04-18 23:51:39' */
 		memset (&filetm, 0, sizeof (struct tm));
+#ifdef HAVE_GDA6
+		filetm.tm_year = g_date_time_get_year (timestamp) - 1900;
+		filetm.tm_mon = g_date_time_get_month (timestamp) - 1;
+		filetm.tm_mday = g_date_time_get_day_of_month (timestamp);
+		filetm.tm_hour = g_date_time_get_hour (timestamp);
+		filetm.tm_min = g_date_time_get_minute (timestamp);
+		filetm.tm_sec = g_date_time_get_second (timestamp);
+#else
 		filetm.tm_year = timestamp->year - 1900;		
 		filetm.tm_mon = timestamp->month - 1;
 		filetm.tm_mday = timestamp->day;
 		filetm.tm_hour = timestamp->hour;
 		filetm.tm_min = timestamp->minute;
 		filetm.tm_sec = timestamp->second;
+#endif
 
 		/* remove one hour to the db_file_time. */
 		db_time = mktime (&filetm) - 3600;
